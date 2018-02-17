@@ -35,11 +35,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Фон = new System.Windows.Forms.TabPage();
-            this.Фигура = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Фигура = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -124,16 +124,6 @@
             this.Фон.Text = "Фон";
             this.Фон.UseVisualStyleBackColor = true;
             // 
-            // Фигура
-            // 
-            this.Фигура.Location = new System.Drawing.Point(4, 22);
-            this.Фигура.Name = "Фигура";
-            this.Фигура.Padding = new System.Windows.Forms.Padding(3);
-            this.Фигура.Size = new System.Drawing.Size(264, 530);
-            this.Фигура.TabIndex = 1;
-            this.Фигура.Text = "Фигура";
-            this.Фигура.UseVisualStyleBackColor = true;
-            // 
             // listView1
             // 
             this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -148,6 +138,16 @@
             this.listView1.Size = new System.Drawing.Size(268, 534);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // Фигура
+            // 
+            this.Фигура.Location = new System.Drawing.Point(4, 22);
+            this.Фигура.Name = "Фигура";
+            this.Фигура.Padding = new System.Windows.Forms.Padding(3);
+            this.Фигура.Size = new System.Drawing.Size(264, 530);
+            this.Фигура.TabIndex = 1;
+            this.Фигура.Text = "Фигура";
+            this.Фигура.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -170,6 +170,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

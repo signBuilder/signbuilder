@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Svg;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,23 @@ namespace SignsBuilder
         public Form1()
         {
             InitializeComponent();
+
+            SvgDocument svg = SvgDocument.Open("C:\\Users\\EAA\\source\\repos\\SignsBuilder\\SignsBuilder\\images\\Vector - Glassy Button by DragonArt.svg");
+            svg.Width = 1000;
+            svg.Height = 1000;
+            Bitmap bitmap = svg.Draw();
+            listView1.LargeImageList = new ImageList();
+            listView1.LargeImageList.Images.Add("test", bitmap);
+            panel1.BackgroundImage = bitmap;
+
+            listView1.View = View.LargeIcon;
+            listView1.LargeImageList.ImageSize = new Size(100, 100);
+
+            ListViewItem item = new ListViewItem();
+            item.Name = "test";
+            item.Text = "test";
+            item.ImageIndex = listView1.LargeImageList.Images.IndexOfKey("test");
+            listView1.Items.Add(item);
         }
 
         private void toolStripLabel1_Click(object sender, EventArgs e)
@@ -35,6 +53,11 @@ namespace SignsBuilder
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
         }
     }
 }
