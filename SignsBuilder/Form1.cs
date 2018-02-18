@@ -21,9 +21,11 @@ namespace SignsBuilder
             InitShapes();
             background.LargeImageList = new ImageList();
             background.LargeImageList.ImageSize = new Size(80, 80);
+            background.ShowItemToolTips = true;
 
             item.LargeImageList = new ImageList();
             item.LargeImageList.ImageSize = new Size(80, 80);
+            item.ShowItemToolTips = true;
 
 
             foreach (Shape shape in shapes)
