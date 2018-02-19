@@ -15,6 +15,8 @@ namespace SignsBuilder
     public partial class Form1 : Form
     {
         List<Shape> shapes = new List<Shape>();
+        Canvas canva;
+        Graphics graphics;
         public Form1()
         {
             InitializeComponent();
@@ -38,7 +40,8 @@ namespace SignsBuilder
                     background.LargeImageList.Images.Add(shape.Name, shape.GetImage(100, 100));
                     viewItem.ImageIndex = background.LargeImageList.Images.IndexOfKey(shape.Name);
                     background.Items.Add(viewItem);
-                } else if (shape.Directory.Equals("item"))
+                }
+                else if (shape.Directory.Equals("item"))
                 {
                     item.LargeImageList.Images.Add(shape.Name, shape.GetImage(100, 100));
                     viewItem.ImageIndex = item.LargeImageList.Images.IndexOfKey(shape.Name);
@@ -47,17 +50,30 @@ namespace SignsBuilder
             }
 
             background.View = View.LargeIcon;
+        }
 
-            //SvgDocument svg = SvgDocument.Open(AppDomain.CurrentDomain.BaseDirectory + "\\images\\Vector - Glassy Button by DragonArt.svg");
-            //svg.Width = 1000;
-            //svg.Height = 1000;
-            //Bitmap bitmap = svg.Draw();
-            //listView1.LargeImageList = new ImageList();
-            //listView1.LargeImageList.Images.Add("test", bitmap);
-            //panel1.BackgroundImage = bitmap;
+        private void listView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            DoDragDrop(e.Item, DragDropEffects.Move);
+        }
 
-            //listView1.View = View.LargeIcon;
+        private void canvas_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListViewItem)))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+        }
 
+        private void canvas_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(ListViewItem)))
+            {
+                var item = e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
+                Shape shape = getShapeByName(item.Name);
+                canva.AddItem(shape, e.X + 100, e.Y + 100);
+                graphics.DrawImage(shape.GetImage(100, 100), e.X, e.Y);
+            }
         }
 
         private void InitShapes()
@@ -90,11 +106,6 @@ namespace SignsBuilder
 
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
 
@@ -105,9 +116,47 @@ namespace SignsBuilder
             
         }
 
-        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
+        private Shape getShapeByName(String name)
         {
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Name.Equals(name))
+                {
+                    return shape;
+                }
+            }
+            return null;
+        }
 
+        private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graphics = canvas.CreateGraphics();
+            canva = new Canvas();
+            canvas.BackColor = Color.White;
+            canvas.AllowDrop = true;
+        }
+
+        private void RedrawCanvas()
+        {
+            if (graphics != null)
+            {
+                canva.Draw(graphics);
+            }
+        }
+
+        private void Form1_LocationChanged(object sender, EventArgs e)
+        {
+            RedrawCanvas();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            RedrawCanvas();
         }
     }
 }
