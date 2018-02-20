@@ -76,9 +76,9 @@ namespace SignsBuilder
                 int posX = e.X - shape.Width / 2;
                 int posY = e.Y - shape.Height / 2;
                 Point target = pan.PointToClient(new Point(posX, posY));
-                canva.AddItem(shape, posX, posY);
+                canva.AddItem(shape, target.X, target.Y);
                 graphics.DrawImage(shape.GetImage(), target);
-                Console.WriteLine(posY + " " + posX);
+                Console.WriteLine(target.X + " " + target.Y);
             }
         }
 
@@ -191,8 +191,8 @@ namespace SignsBuilder
                 Console.WriteLine(target);
                 foreach (Item item in canva.Items)
                 {
-                    if (target.X > item.posX - item.shape.Width / 2 && target.X < item.posX + item.shape.Width / 2 &&
-                        target.Y > item.posY - item.shape.Height / 2 && target.Y < item.posY + item.shape.Height / 2)
+                    if (target.X > item.posX && target.X < item.posX + item.shape.Width &&
+                        target.Y > item.posY  && target.Y < item.posY + item.shape.Height)
                     {
                         selectedItem = item;
                     }
