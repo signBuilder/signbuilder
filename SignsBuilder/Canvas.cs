@@ -30,7 +30,7 @@ namespace SignsBuilder
         {
             foreach (Item item in Items)
             {
-                graphics.DrawImage(item.shape.GetImage(100, 100), item.posX, item.posY);
+                graphics.DrawImage(item.shape.GetImage(), item.posX, item.posY);
             }
         }
     }

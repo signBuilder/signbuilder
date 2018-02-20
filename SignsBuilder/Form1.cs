@@ -17,6 +17,7 @@ namespace SignsBuilder
         List<Shape> shapes = new List<Shape>();
         Canvas canva;
         Graphics graphics;
+        Item selectedItem;
         public Form1()
         {
             InitializeComponent();
@@ -37,13 +38,13 @@ namespace SignsBuilder
                 viewItem.ToolTipText = shape.Description;
                 if (shape.Directory.Equals("background"))
                 {
-                    background.LargeImageList.Images.Add(shape.Name, shape.GetImage(100, 100));
+                    background.LargeImageList.Images.Add(shape.Name, shape.GetImage());
                     viewItem.ImageIndex = background.LargeImageList.Images.IndexOfKey(shape.Name);
                     background.Items.Add(viewItem);
                 }
                 else if (shape.Directory.Equals("item"))
                 {
-                    item.LargeImageList.Images.Add(shape.Name, shape.GetImage(100, 100));
+                    item.LargeImageList.Images.Add(shape.Name, shape.GetImage());
                     viewItem.ImageIndex = item.LargeImageList.Images.IndexOfKey(shape.Name);
                     item.Items.Add(viewItem);
                 }
@@ -70,9 +71,14 @@ namespace SignsBuilder
             if (e.Data.GetDataPresent(typeof(ListViewItem)))
             {
                 var item = e.Data.GetData(typeof(ListViewItem)) as ListViewItem;
+                Panel pan = sender as Panel;
                 Shape shape = getShapeByName(item.Name);
-                canva.AddItem(shape, e.X + 100, e.Y + 100);
-                graphics.DrawImage(shape.GetImage(100, 100), e.X, e.Y);
+                int posX = e.X - shape.Width / 2;
+                int posY = e.Y - shape.Height / 2;
+                Point target = pan.PointToClient(new Point(posX, posY));
+                canva.AddItem(shape, posX, posY);
+                graphics.DrawImage(shape.GetImage(), target);
+                Console.WriteLine(posY + " " + posX);
             }
         }
 
@@ -157,6 +163,42 @@ namespace SignsBuilder
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
             RedrawCanvas();
+        }
+
+        private void canvas_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (selectedItem != null)
+            {
+                Panel pan = sender as Panel;
+                Point target = pan.PointToClient(new Point(e.X, e.Y));
+                selectedItem.posX = target.X;
+                selectedItem.posY = target.Y;
+                RedrawCanvas();
+            }
+        }
+
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void canvas_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (canva != null)
+            {
+                Panel pan = sender as Panel;
+                Point target = new Point(e.X, e.Y);
+                Console.WriteLine(target);
+                foreach (Item item in canva.Items)
+                {
+                    if (target.X > item.posX - item.shape.Width / 2 && target.X < item.posX + item.shape.Width / 2 &&
+                        target.Y > item.posY - item.shape.Height / 2 && target.Y < item.posY + item.shape.Height / 2)
+                    {
+                        selectedItem = item;
+                    }
+                }
+            }
+            
         }
     }
 }
